@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coin Toss</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#74ebd5,#ACB6E5);
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  color:#fff;
+  text-shadow: 2px 2px 6px #000;
+  margin-bottom: 30px;
+}
+
+.coin-container {
+  width: 120px; /* container slightly smaller */
+  height: 160px;
+  perspective: 1000px;
+  position: relative;
+}
+
+.coin {
+  width: 120px; /* smaller coin */
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #e6c200);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px; /* slightly smaller emoji */
+  color: #fff;
+  border: 3px solid #fff;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6), inset 0 0 15px rgba(255,255,255,0.4);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.shine {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%);
+  top: 0;
+  left: 0;
+  transform: rotate(45deg);
+  animation: shineMove 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes shineMove {
+  0% {transform:rotate(45deg) translateX(-200%);}
+  100% {transform:rotate(45deg) translateX(200%);}
+}
+
+.result {
+  margin-top: 30px;
+  font-size: 1.8em;
+  color: #fff;
+  text-shadow: 1px 1px 5px #000;
+  height: 50px;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 10px;
+  background: #ffcc00;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Toss animation */
+@keyframes toss {
+  0% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  20% {
+    transform: translateY(-200px) rotateX(720deg) rotateY(1080deg);
+  }
+  50% {
+    transform: translateY(-150px) rotateX(1080deg) rotateY(1620deg);
+  }
+  70% {
+    transform: translateY(-70px) rotateX(1440deg) rotateY(2160deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+.coin.flip {
+  animation: toss 2.5s ease-out forwards;
+}
+</style>
+</head>
+<body>
+
+<h1>Flip the Coin!</h1>
+
+<div class="coin-container">
+  <div class="coin" id="coin">🪙</div>
+  <div class="shine"></div>
+</div>
+
+<div class="result" id="result"></div>
+<button class="button" id="flipBtn">Flip Coin</button>
+
+<script>
+const coin = document.getElementById('coin');
+const result = document.getElementById('result');
+const flipBtn = document.getElementById('flipBtn');
+
+function playSound(){
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  osc.type='square';
+  osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.1);
+}
+
+flipBtn.addEventListener('click', ()=>{
+  result.textContent='';
+  coin.classList.remove('flip');
+
+  setTimeout(()=>{
+    coin.classList.add('flip');
+    playSound();
+
+    setTimeout(()=>{
+      const choice = Math.random() < 0.5 ? 'Heads' : 'Tails';
+      coin.textContent = choice==='Heads' ? '🪙' : '🎯';
+      result.textContent = choice;
+      playSound();
+    },2500);
+  },50);
+});
+</script>
+
+</body>
+  </html>
