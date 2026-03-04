@@ -3,129 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coin Flip PWA</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#74ebd5">
+<title>Coin Toss</title>
 <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    overflow: hidden;
-  }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#74ebd5,#ACB6E5);
+  height: 100vh;
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
 
-  h1 {
-    color: #fff;
-    text-shadow: 2px 2px 6px #000;
-    margin-bottom: 40px;
-  }
+h1 {
+  color:#fff;
+  text-shadow:2px 2px 6px #000;
+  margin-bottom:30px;
+}
 
-  .coin-container {
-    perspective: 1000px;
-    position: relative;
-  }
+.coin-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  perspective: 1000px;
+}
 
-  .coin {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    position: relative;
-    transform-style: preserve-3d;
-    cursor: pointer;
-    transition: transform 3s cubic-bezier(0.33,1,0.68,1);
-  }
+.coin {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #e6c200);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:50px;
+  color:#fff;
+  border:4px solid #fff;
+  box-shadow:0 0 25px rgba(255,255,255,0.6), inset 0 0 20px rgba(255,255,255,0.4);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: absolute;
+  bottom:0;
+}
 
-  .side {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    color: #fff;
-    border: 4px solid #fff;
-    box-shadow: 0 0 25px rgba(255,255,255,0.6), inset 0 0 20px rgba(255,255,255,0.4);
-  }
+.shine {
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:linear-gradient(120deg, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%);
+  top:0;
+  left:0;
+  transform:rotate(45deg);
+  animation: shineMove 2s infinite;
+  pointer-events:none;
+}
 
-  .heads {
-    background: radial-gradient(circle at 30% 30%, #ffd700, #e6c200);
-  }
+@keyframes shineMove {
+  0% {transform:rotate(45deg) translateX(-200%);}
+  100% {transform:rotate(45deg) translateX(200%);}
+}
 
-  .tails {
-    background: radial-gradient(circle at 70% 70%, #d4af37, #b8860b);
-    transform: rotateY(180deg);
-  }
+.result {
+  margin-top:30px;
+  font-size:2em;
+  color:#fff;
+  text-shadow:1px 1px 5px #000;
+  height:50px;
+}
 
-  .flip-animation {
-    animation: toss 2s forwards;
-  }
+.button {
+  margin-top:20px;
+  padding:10px 25px;
+  font-size:1.2em;
+  border:none;
+  border-radius:10px;
+  background:#ffcc00;
+  color:#333;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  @keyframes toss {
-    0% {
-      transform: translateY(0px) rotateX(0deg) rotateY(0deg);
-    }
-    30% {
-      transform: translateY(-200px) rotateX(720deg) rotateY(1080deg);
-    }
-    60% {
-      transform: translateY(-150px) rotateX(1080deg) rotateY(1620deg);
-    }
-    100% {
-      transform: translateY(0px) rotateX(0deg) rotateY(0deg);
-    }
-  }
+.button:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
 
-  .shine {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: linear-gradient(120deg, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%);
-    top: 0;
-    left: 0;
-    transform: rotate(45deg);
-    animation: shineMove 2s infinite;
-    pointer-events: none;
-  }
-
-  @keyframes shineMove {
-    0% { transform: rotate(45deg) translateX(-200%); }
-    100% { transform: rotate(45deg) translateX(200%); }
-  }
-
-  .result {
-    margin-top: 30px;
-    font-size: 2em;
-    color: #fff;
-    text-shadow: 1px 1px 5px #000;
-    height: 50px;
-  }
-
-  .button {
-    margin-top: 20px;
-    padding: 10px 25px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    background: #ffcc00;
-    color: #333;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  }
+/* Toss animation */
+@keyframes toss {
+  0% {bottom:0px; transform: rotateX(0deg) rotateY(0deg);}
+  30% {bottom:200px; transform: rotateX(720deg) rotateY(1080deg);}
+  60% {bottom:150px; transform: rotateX(1080deg) rotateY(1620deg);}
+  100% {bottom:0px; transform: rotateX(0deg) rotateY(0deg);}
+}
+.coin.flip {
+  animation: toss 2s forwards;
+}
 </style>
 </head>
 <body>
@@ -133,10 +108,7 @@
 <h1>Flip the Coin!</h1>
 
 <div class="coin-container">
-  <div class="coin" id="coin">
-    <div class="side heads">🪙</div>
-    <div class="side tails">🎯</div>
-  </div>
+  <div class="coin" id="coin">🪙</div>
   <div class="shine"></div>
 </div>
 
@@ -144,47 +116,36 @@
 <button class="button" id="flipBtn">Flip Coin</button>
 
 <script>
-  const coin = document.getElementById('coin');
-  const result = document.getElementById('result');
-  const flipBtn = document.getElementById('flipBtn');
+const coin = document.getElementById('coin');
+const result = document.getElementById('result');
+const flipBtn = document.getElementById('flipBtn');
 
-  function playSound() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator();
-    oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
-    oscillator.connect(audioCtx.destination);
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.1);
-  }
+function playSound(){
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  osc.type='square';
+  osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.1);
+}
 
-  flipBtn.addEventListener('click', () => {
-    result.textContent = '';
-    coin.classList.remove('flip-animation');
+flipBtn.addEventListener('click', ()=>{
+  result.textContent='';
+  coin.classList.remove('flip');
 
-    // Small delay to reset animation
-    setTimeout(() => {
-      // Start toss animation
-      coin.classList.add('flip-animation');
+  setTimeout(()=>{
+    coin.classList.add('flip');
+    playSound();
+
+    setTimeout(()=>{
+      const choice = Math.random() < 0.5 ? 'Heads' : 'Tails';
+      coin.textContent = choice==='Heads' ? '🪙' : '🎯';
+      result.textContent = choice;
       playSound();
-
-      // Decide heads or tails after toss duration
-      setTimeout(() => {
-        const choice = Math.random() < 0.5 ? 'Heads' : 'Tails';
-        coin.style.transform = choice === 'Heads' ? 'rotateY(0deg)' : 'rotateY(180deg)';
-        result.textContent = choice;
-        playSound();
-      }, 2000); // same as toss animation duration
-    }, 50);
-  });
-
-  // Service Worker registration for offline
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('Service Worker registered'))
-      .catch(err => console.log('SW registration failed', err));
-  }
+    },2000); // match animation duration
+  },50);
+});
 </script>
-
 </body>
 </html>
