@@ -64,8 +64,23 @@
     transform: rotateY(180deg);
   }
 
-  .flip {
-    transform: rotateY(1080deg);
+  .flip-animation {
+    animation: toss 2s forwards;
+  }
+
+  @keyframes toss {
+    0% {
+      transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+    }
+    30% {
+      transform: translateY(-200px) rotateX(720deg) rotateY(1080deg);
+    }
+    60% {
+      transform: translateY(-150px) rotateX(1080deg) rotateY(1620deg);
+    }
+    100% {
+      transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+    }
   }
 
   .shine {
@@ -145,19 +160,22 @@
 
   flipBtn.addEventListener('click', () => {
     result.textContent = '';
-    coin.classList.remove('flip');
+    coin.classList.remove('flip-animation');
 
+    // Small delay to reset animation
     setTimeout(() => {
-      coin.classList.add('flip');
+      // Start toss animation
+      coin.classList.add('flip-animation');
       playSound();
 
+      // Decide heads or tails after toss duration
       setTimeout(() => {
         const choice = Math.random() < 0.5 ? 'Heads' : 'Tails';
         coin.style.transform = choice === 'Heads' ? 'rotateY(0deg)' : 'rotateY(180deg)';
         result.textContent = choice;
         playSound();
-      }, 3000);
-    }, 100);
+      }, 2000); // same as toss animation duration
+    }, 50);
   });
 
   // Service Worker registration for offline
@@ -169,4 +187,4 @@
 </script>
 
 </body>
-  </html>
+</html>
